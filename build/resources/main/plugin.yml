@@ -1,0 +1,8 @@
+name: HonorRanking
+version: 1.0.0-DEV
+author: MrCyci6
+website: https://github.com/MrCyci6
+main: fr.mrcyci6.honormc.HonorRanking
+commands:
+  ranking:
+    aliases: ["classement", "classements"]

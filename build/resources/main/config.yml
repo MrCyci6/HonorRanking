@@ -1,0 +1,36 @@
+prefix: "&6&lClassement &7● "
+
+permission: "honorranking.admin"
+permission-error: "&cVous n'avez pas les permissions nécessaire."
+
+add-points-usage: "&c/ranking addpoints <player/faction> <competitive/farming> <points>"
+remove-points-usage: "&c/ranking removepoints <player/faction> <competitive/farming> <points>"
+reset-points-usage: "&c/ranking reset <player/faction> <competitive/farming>"
+info-usage: "&c/ranking info <player/faction>"
+
+help-message:
+  - "&c/ranking addpoints <player/faction> <competitive/farming> <points>"
+  - "&c/ranking removepoints <player/faction> <competitive/farming> <points>"
+  - "&c/ranking reset <player/faction> <competitive/farming>"
+  - "&c/ranking info <player/faction>"
+  - "&c/ranking update"
+  - "&c/ranking reload"
+
+add-points-success: "&fVous avez ajouté &a%s1 point(s) &fà la faction &b%s2&f."
+remove-points-success: "&fVous avez enlevé &c%s1 points &fà la faction &b%s2&f."
+reset-points-success: "&fVous avez réinitialisé les &apoints &fde la faction &b%s&f."
+update-success: "&fVous venez de &bmettre à jour &fles différents classements."
+reload-plugin-success: "&aVous avez rechargé le plugin."
+info-output:
+  - "&7Points de %s1"
+  - "&6Competitive &e%s2"
+  - "&6Farming &e%s3"
+
+faction-not-found: "&cFaction introuvable."
+
+database:
+  dbhost: "127.0.0.1"
+  dbport: 3306
+  dbname: "HonorRanking"
+  dbuser: "honormc"
+  dbpassword: "honormc"
