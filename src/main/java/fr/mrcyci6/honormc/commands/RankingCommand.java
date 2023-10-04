@@ -64,7 +64,7 @@ public class RankingCommand implements CommandExecutor {
         final String prefix = this.plugin.getConfig().getString("prefix").replaceAll("&", "§");
 
         if(args.length < 1) {
-            this.plugin.sendHelpMessage((Player) sender);
+            this.plugin.sendHelpMessage(sender);
             return false;
         }
 
@@ -77,9 +77,11 @@ public class RankingCommand implements CommandExecutor {
 
         switch (args[0]) {
             case "reload":
-                if(checkPerm((Player) sender)) {
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
-                    return false;
+                if(sender instanceof Player) {
+                    if (checkPerm((Player) sender)) {
+                        sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
+                        return false;
+                    }
                 }
 
                 this.plugin.reloadConfig();
@@ -87,13 +89,15 @@ public class RankingCommand implements CommandExecutor {
 
                 break;
             case "update":
-                if(checkPerm((Player) sender)) {
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
-                    return false;
+                if(sender instanceof Player) {
+                    if (checkPerm((Player) sender)) {
+                        sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
+                        return false;
+                    }
                 }
 
                 try {
-                    this.plugin.getDatabaseManager().updateDatabase(((Player) sender).getPlayer());
+                    this.plugin.getDatabaseManager().updateDatabase(sender);
                 } catch (IOException | SQLException e) {
                     sender.sendMessage(prefix + "&cAn error as occurred, more info on Console");
                 }
@@ -102,7 +106,7 @@ public class RankingCommand implements CommandExecutor {
             case "info":
 
                 if(args.length < 2) {
-                    this.plugin.sendHelpMessage((Player) sender);
+                    this.plugin.sendHelpMessage(sender);
                     break;
                 }
 
@@ -135,13 +139,15 @@ public class RankingCommand implements CommandExecutor {
                 });
                 break;
             case "addpoints":
-                if(checkPerm((Player) sender)) {
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
-                    return false;
+                if(sender instanceof Player) {
+                    if (checkPerm((Player) sender)) {
+                        sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
+                        return false;
+                    }
                 }
 
                 if(args.length < 4) {
-                    this.plugin.sendHelpMessage((Player) sender);
+                    this.plugin.sendHelpMessage(sender);
                     break;
                 }
 
@@ -158,7 +164,7 @@ public class RankingCommand implements CommandExecutor {
                 } else if(type.toLowerCase().equals("farming")){
                     fpoint = Integer.parseInt(args[3]);
                 } else {
-                    this.plugin.sendHelpMessage((Player) sender);
+                    this.plugin.sendHelpMessage(sender);
                     break;
                 }
 
@@ -175,25 +181,27 @@ public class RankingCommand implements CommandExecutor {
                     json = serializationManager.serialize(classementManager);
                     FileUtils.save(file, json);
 
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("add-points-success").replaceAll("&", "§").replaceAll("%s1", args[3]).replaceAll("%s2", faction.getTag()))
+                    sender.sendMessage(prefix + this.plugin.getConfig().getString("add-points-success").replaceAll("&", "§").replaceAll("%s1", args[3]).replaceAll("%s2", faction.getTag()));
                 } else {
 
                     final ClassementManager classementManager = new ClassementManager(faction.getTag(), cpoint, fpoint);
                     final String json = serializationManager.serialize(classementManager);
 
                     FileUtils.save(file, json);
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("add-points-success").replaceAll("&", "§").replaceAll("%s1", args[3]).replaceAll("%s2", faction.getTag()))
+                    sender.sendMessage(prefix + this.plugin.getConfig().getString("add-points-success").replaceAll("&", "§").replaceAll("%s1", args[3]).replaceAll("%s2", faction.getTag()));
                 }
 
                 break;
             case "removepoints":
-                if(checkPerm((Player) sender)) {
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
-                    return false;
+                if(sender instanceof Player) {
+                    if (checkPerm((Player) sender)) {
+                        sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
+                        return false;
+                    }
                 }
 
                 if(args.length < 3) {
-                    this.plugin.sendHelpMessage((Player) sender);
+                    this.plugin.sendHelpMessage(sender);
                     break;
                 }
 
@@ -210,7 +218,7 @@ public class RankingCommand implements CommandExecutor {
                 } else if(type.toLowerCase().equals("farming")){
                     fpoint = Integer.parseInt(args[3]);
                 } else {
-                    this.plugin.sendHelpMessage((Player) sender);
+                    this.plugin.sendHelpMessage(sender);
                     break;
                 }
 
@@ -227,24 +235,26 @@ public class RankingCommand implements CommandExecutor {
                     json = serializationManager.serialize(classementManager);
                     FileUtils.save(file, json);
 
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("remove-points-success").replaceAll("&", "§").replaceAll("%s1", args[3]).replaceAll("%s2", faction.getTag()))
+                    sender.sendMessage(prefix + this.plugin.getConfig().getString("remove-points-success").replaceAll("&", "§").replaceAll("%s1", args[3]).replaceAll("%s2", faction.getTag()));
                 } else {
 
                     final ClassementManager classementManager = new ClassementManager(faction.getTag(), cpoint, fpoint);
                     final String json = serializationManager.serialize(classementManager);
 
                     FileUtils.save(file, json);
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("remove-points-success").replaceAll("&", "§").replaceAll("%s1", args[3]).replaceAll("%s2", faction.getTag()))
+                    sender.sendMessage(prefix + this.plugin.getConfig().getString("remove-points-success").replaceAll("&", "§").replaceAll("%s1", args[3]).replaceAll("%s2", faction.getTag()));
                 }
                 break;
             case "reset":
-                if(checkPerm((Player) sender)) {
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
-                    return false;
+                if(sender instanceof Player) {
+                    if (checkPerm((Player) sender)) {
+                        sender.sendMessage(prefix + this.plugin.getConfig().getString("permission-error").replaceAll("&", "§"));
+                        return false;
+                    }
                 }
 
                 if(args.length < 3) {
-                    this.plugin.sendHelpMessage((Player) sender);
+                    this.plugin.sendHelpMessage(sender);
                     break;
                 }
 
@@ -271,7 +281,7 @@ public class RankingCommand implements CommandExecutor {
                         cpoint = classementManager.getcPoints();
                         fpoint = 0;
                     } else {
-                        this.plugin.sendHelpMessage((Player) sender);
+                        this.plugin.sendHelpMessage(sender);
                         break;
                     }
 
@@ -281,20 +291,20 @@ public class RankingCommand implements CommandExecutor {
                     json = serializationManager.serialize(classementManager);
                     FileUtils.save(file, json);
 
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("reset-points-success").replaceAll("&", "§").replaceAll("%s", faction.getTag()))
+                    sender.sendMessage(prefix + this.plugin.getConfig().getString("reset-points-success").replaceAll("&", "§").replaceAll("%s", faction.getTag()));
                 } else {
 
                     final ClassementManager classementManager = new ClassementManager(faction.getTag(), 0, 0);
                     final String json = serializationManager.serialize(classementManager);
 
                     FileUtils.save(file, json);
-                    sender.sendMessage(prefix + this.plugin.getConfig().getString("reset-points-success").replaceAll("&", "§").replaceAll("%s", faction.getTag()))
+                    sender.sendMessage(prefix + this.plugin.getConfig().getString("reset-points-success").replaceAll("&", "§").replaceAll("%s", faction.getTag()));
                 }
 
                 break;
             default:
 
-                this.plugin.sendHelpMessage((Player) sender);
+                this.plugin.sendHelpMessage(sender);
                 break;
         }
 

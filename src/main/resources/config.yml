@@ -1,5 +1,8 @@
 prefix: "&6&lClassement &7● "
 
+auto-update-enable: true
+auto-update: 30 # Exemple: 10 (secondes)
+
 permission: "honorranking.admin"
 permission-error: "&cVous n'avez pas les permissions nécessaire."
 
@@ -9,6 +12,7 @@ reset-points-usage: "&c/ranking reset <player/faction> <competitive/farming>"
 info-usage: "&c/ranking info <player/faction>"
 
 help-message:
+  - "&c/ranking"
   - "&c/ranking addpoints <player/faction> <competitive/farming> <points>"
   - "&c/ranking removepoints <player/faction> <competitive/farming> <points>"
   - "&c/ranking reset <player/faction> <competitive/farming>"

@@ -4,10 +4,13 @@ import fr.mrcyci6.honormc.commands.RankingCommand;
 import fr.mrcyci6.honormc.listeners.PlayerListener;
 import fr.mrcyci6.honormc.managers.DatabaseManager;
 import fr.mrcyci6.honormc.managers.SerializationManager;
+import fr.mrcyci6.honormc.tasks.UpdateTask;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class HonorRanking extends JavaPlugin {
@@ -36,6 +39,8 @@ public class HonorRanking extends JavaPlugin {
             databaseManager.initializeDatabase();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         // COMMANDS
@@ -44,6 +49,10 @@ public class HonorRanking extends JavaPlugin {
         // LISTENERS
         Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
 
+        // TIMERS AUTO UPDATE
+        UpdateTask task = new UpdateTask(this);
+        task.runTaskTimer(this, 0, 20);
+
         sendLog("§e" + getName() + " V" + getDescription().getVersion() + " is now §aenabled");
         sendLog("§eBy " + getDescription().getAuthors());
     }
@@ -51,9 +60,20 @@ public class HonorRanking extends JavaPlugin {
     @Override
     public void onDisable() {
 
-        if(databaseManager != null) {
-            databaseManager.closeConnection();
-            sendLog("§cDatabase successfully deconnected");
+        try {
+            if(databaseManager != null && databaseManager.getConnection() != null && !databaseManager.getConnection().isClosed()) {
+                try {
+                    databaseManager.updateDatabase(Bukkit.getConsoleSender());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                databaseManager.closeConnection();
+                sendLog("§cDatabase successfully deconnected");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         sendLog("§e" + getName() + " V" + getDescription().getVersion() + " is now §cdisabled");
@@ -76,7 +96,7 @@ public class HonorRanking extends JavaPlugin {
         return serializationManager;
     }
 
-    public void sendHelpMessage(Player player) {
+    public void sendHelpMessage(CommandSender player) {
         this.getConfig().getStringList("help-message").forEach(message -> {
             player.sendMessage(this.getConfig().getString("prefix").replaceAll("&", "§") + message.replaceAll("&", "§"));
         });
